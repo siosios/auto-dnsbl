@@ -1,5 +1,5 @@
 
-# Credit goes to Helix over at ipfire.org
+# Credit goes to Helix over at ipfire.org - https://people.ipfire.org/~helix/auto-dnsbl/
 
 
 ## Auto-dnsbl 1.0 for IPFire 2.27 (x86_64) - Core-Update 182 and later. 
