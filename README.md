@@ -1,3 +1,4 @@
+
 # Credit goes to Helix over at ipfire.org
 
 
@@ -12,7 +13,7 @@ iptables Drop rules to prevent any re-connection. When an IP Address is blocked
 auto-dnsbl will send an email message to the system administrator containing 
 details of the blocked IP Address.
 
-Auto-dnsbl is based on the auto-dnsbl.pl script found on:
+## Auto-dnsbl is based on the auto-dnsbl.pl script found on:
 
 https://gist.githubusercontent.com/jikamens/07220fc98361421c2ddfabb5286c14d8 
 by Jonathan Kamens
