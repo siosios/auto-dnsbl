@@ -1,0 +1,80 @@
+#!/bin/sh
+########################################################################
+# Begin $rc_base/init.d/auto-dnsbl
+#
+# Description : Init script for auto-dnsbl - dns blocklist for ipfire
+#
+# Authors     : Rob Brewer  rob.brewer@ipfire.org
+#
+# Version     : 01.00
+#
+# Notes       : 5th February 2024
+#
+########################################################################
+
+. /etc/sysconfig/rc
+. ${rc_functions}
+
+PIDFILE="/run/auto-dnsbl.pid"
+LOCKFILE="/var/lock/subsys/auto-dnsbl"
+KILL="/bin/kill"
+PIDOF="/bin/pidof"
+IPTABLES="/sbin/iptables"
+
+
+case "${1}" in
+        start)
+        
+	        boot_mesg "Starting auto-dnsbl:"
+	        if [ -f $LOCKFILE ]; then
+                echo auto-dnsbl is already running: $PID
+                exit 2;
+		
+      	 elif
+		# Check if chain AUTO-DNSBL is loaded
+		$IPTABLES -C FORWARD -j AUTO-DNSBL
+		[ $? != 0 ]; then
+		boot_mesg -n "WARNING: Chain AUTO-DNSBL is not loaded." ${WARNING}
+		boot_mesg -n " Run /etc/sysconfig/firewall.local reload" 
+		boot_mesg "" ${NORMAL}
+                echo_warning
+		exit 2;
+
+	else 
+	
+                loadproc -b  /usr/local/bin/auto-dnsbl.pl                
+                RETVAL=$?
+                echo
+                [ $RETVAL -eq 0 ] && touch $LOCKFILE
+        fi                        
+                ;;
+
+        stop)
+               
+PID=$(<"$PIDFILE")
+CHILDPID=$($PIDOF auto-dnsbl-expire)
+
+                boot_mesg "Stopping auto-dnsbl daemon and children:"
+		$KILL -s SIGTERM $PID
+		$KILL -s SIGTERM $CHILDPID 
+                RETVAL=$?
+		rm -f $PIDFILE
+                rm -f $LOCKFILE
+                ;;
+
+        restart)
+                ${0} stop
+                sleep 1
+                ${0} start
+                ;;
+
+        status)
+                statusproc  /usr/local/bin/auto-dnsbl.pl
+                ;;
+
+        *)
+                echo "Usage: ${0} {start|stop|restart|status}"
+                exit 1
+                ;;
+esac
+

@@ -1,0 +1,18 @@
+--- /srv/web/ipfire/cgi-bin/logs.cgi/log.dat	2024-01-22 21:17:19.614307815 +0000
++++ /srv/web/ipfire/cgi-bin/logs.cgi/log.dat.2	2024-02-13 14:04:02.722381772 +0000
+@@ -51,6 +51,7 @@
+ my %sections = (
+         'apcupsd' => '(apcupsd\[.*?\]: )',
+         'auth' => '(\w+\(pam_unix\)\[.*\]: )',
++        'auto-dnsbl' => '(auto-dnsbl)',
+         'wio' => '(wio:|wio\[.*\])',
+         'captive' => '(Captive:)',
+         'clamav' => '(clamd\[.*\]: |freshclam\[.*\]: )',
+@@ -86,6 +87,7 @@
+ my %trsections = (
+         'apcupsd' => 'APCUPS',
+         'auth' => "$Lang::tr{'loginlogout'}",
++	'auto-dnsbl' => 'Auto-dnsbl',
+         'wio' => 'Who Is Online?',
+         'captive' => $Lang::tr{'Captive'},
+         'clamav' => 'ClamAV',
